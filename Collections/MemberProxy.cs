@@ -8,12 +8,35 @@ namespace Pxtl.Collections
     {
         TMember Get(TParent parent);
         void Set(IObjectProxy<TParent> parent, TMember memberValue);
+        ICollection<string> AsPath { get;}
     }
 
     public abstract class MemberProxy<TParent, TMember> : IMemberProxy<TParent, TMember>
     {
         public abstract TMember Get(TParent parent);
         public abstract void Set(IObjectProxy<TParent> parent, TMember memberValue);
+        public abstract ICollection<string> AsPath { get;}
+    }
+
+    public class SelfMember<T> : MemberProxy<T, T>
+    {
+        public override T Get(T parent)
+        {
+            return parent;
+        }
+
+        public override void Set(IObjectProxy<T> parent, T memberValue)
+        {
+            parent.Val = memberValue;
+        }
+
+        public override ICollection<string> AsPath
+        {
+            get
+            {
+                return new List<string>();
+            }
+        }
     }
 
     public class IndexerMemberProxy<TKey, TValue> : MemberProxy<IDictionary<TKey, TValue>, TValue>
@@ -34,6 +57,11 @@ namespace Pxtl.Collections
         {
             parent.Val[Key] = memberValue;
         }
+
+        public override ICollection<string> AsPath
+        {
+            get { return new string[] { Key.ToString() }; }
+        } 
     }
 
     public class ConcatenatedMemberProxy<TRoot, TJoin, TMember> : MemberProxy<TRoot, TMember>
@@ -56,6 +84,16 @@ namespace Pxtl.Collections
         {
             MemberObjectProxy<TRoot, TJoin> firstObjectProxy = new MemberObjectProxy<TRoot,TJoin>(First, parent);
             Second.Set(firstObjectProxy, memberValue);
+        }
+
+        public override ICollection<string> AsPath
+        {
+            get 
+            { 
+                List<string> path = new List<string>(First.AsPath);
+                path.AddRange(Second.AsPath);
+                return path;
+            }
         }
     }
 
@@ -105,6 +143,18 @@ namespace Pxtl.Collections
                 curNode = new IndexerProxy<TKey, TDict>(curNode.Val, name);
             }
             curNode.Val = memberValue; 
+        }
+
+        public override ICollection<string> AsPath
+        {
+            get { 
+                List<string> resList = new List<string>(KeyPath.Count);
+                foreach (TKey key in KeyPath)
+                {
+                    resList.Add(key.ToString());
+                }
+                return resList;
+            }
         }
     }
 }
