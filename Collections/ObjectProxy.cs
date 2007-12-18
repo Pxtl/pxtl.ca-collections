@@ -26,18 +26,39 @@ namespace Pxtl.Collections
         }
     }
 
-    public class MemberObjectProxy<TParent, TMember> : ObjectProxy<TMember>
+    public interface IMemberObjectProxy<TParent, TMember> : IObjectProxy<TMember>
     {
-        public IMemberProxy<TParent, TMember> MemberProxy;
-        public IObjectProxy<TParent> Parent;
+        IMemberProxy<TParent, TMember> MemberProxy { get;}
+        IObjectProxy<TParent> Parent { get;}
+    }
+
+    public class MemberObjectProxy<TParent, TMember> : IMemberObjectProxy<TParent, TMember>
+    {
+        private IMemberProxy<TParent, TMember> _MemberProxy;
+        public IMemberProxy<TParent, TMember> MemberProxy
+        {
+            get
+            {
+                return _MemberProxy;
+            }
+        }
+
+        private IObjectProxy<TParent> _Parent;
+        public IObjectProxy<TParent> Parent
+        {
+            get
+            {
+                return _Parent;
+            }
+        }
 
         public MemberObjectProxy(IMemberProxy<TParent, TMember> memberProxy, IObjectProxy<TParent> parent)
         {
-            MemberProxy = memberProxy;
-            Parent = parent;
+            _MemberProxy = memberProxy;
+            _Parent = parent;
         }
 
-        public override TMember  Val
+        public TMember  Val
         {
 	        get 
 	        { 
@@ -50,14 +71,14 @@ namespace Pxtl.Collections
         }
     }
 
-    public class IndexerProxy<TKey, TValue> : MemberObjectProxy<IDictionary<TKey, TValue>, TValue>
+    public class IndexerProxy<TKey, TValue> : IMemberObjectProxy<IDictionary<TKey, TValue>, TValue>
     {
         public IndexerProxy(IDictionary<TKey, TValue> dict, TKey key)
             : base(new IndexerMemberProxy<TKey, TValue>(key), new RefProxy<IDictionary<TKey, TValue>>(dict)) 
         {}
     }
 
-    public class TreePathProxy<TDict, TKey> : MemberObjectProxy<TDict, TDict> where TDict : IDictionary<TKey, TDict>
+    public class TreePathProxy<TDict, TKey> : IMemberObjectProxy<TDict, TDict> where TDict : IDictionary<TKey, TDict>
     {
         public TreePathProxy(IObjectProxy<TDict> nodeProxy, IList<TKey> keyPath) : base(new TreePathMemberProxy<TDict, TKey>(keyPath), nodeProxy) {}
     }
