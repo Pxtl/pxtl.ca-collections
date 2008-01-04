@@ -20,6 +20,8 @@ namespace Pxtl.Collections
 
     public class SelfMember<T> : MemberProxy<T, T>
     {
+        public static readonly SelfMember<T> Instance = new SelfMember<T>();
+
         public override T Get(T parent)
         {
             return parent;
