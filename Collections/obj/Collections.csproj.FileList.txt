@@ -1,0 +1,5 @@
+bin\Debug\Pxtl.Collections.dll
+bin\Debug\Pxtl.Collections.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Pxtl.Collections.dll
+obj\Debug\Pxtl.Collections.pdb
