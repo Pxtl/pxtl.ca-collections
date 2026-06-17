@@ -15,24 +15,6 @@ namespace Pxtl.Collections
                 handler(pair.Value, new IndexerProxy<K, V>(target, pair.Key));
             }
         }
-
-        public static string UnsplitString(IEnumerable<string> list, string seperator)
-        {
-            StringBuilder sb = null;
-            foreach (string str in list)
-            {
-                if (sb != null)
-                {
-                    sb.Append(seperator);
-                }
-                else
-                {
-                     sb = new StringBuilder();
-                }
-                sb.Append(str);
-            }
-            return (sb ?? new StringBuilder()).ToString();
-        }
     }
 
     public static class DictUtil
