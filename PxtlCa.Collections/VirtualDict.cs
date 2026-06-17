@@ -5,9 +5,11 @@ using System.Text;
 
 namespace Pxtl.Collections
 {
-    public class VirtualDict<K, V> : IDictionary<K, V> 
+    public class VirtualDict<K, V> : IDictionary<K, V>
     {
-        // Underlying dictionary - everything delegates
+        /// <summary>
+        /// Provides the underlying collection for this wrapper.
+        /// </summary>
         // to this.
 
         private IDictionary<K, V> _dict;

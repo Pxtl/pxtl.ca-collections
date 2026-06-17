@@ -5,7 +5,9 @@ using System.Text;
 
 namespace Pxtl.Collections
 {
-    public class MixableDict<K, V> : VirtualDict<K, V>
+    /// <summary>
+    /// A dictionary allowing mixin extensions for custom behavior.
+    /// </summary>
     {
         public MixableDict() : base()
         {
@@ -48,8 +50,12 @@ namespace Pxtl.Collections
             _mixinListHead = new DictMixinHolder(new TerminalDictMixin(_BaseDict));
         }
 
-        private DictMixinHolder _mixinListHead;
-        public IEnumerable<DictMixin<K, V>> Mixins
+        /// <summary>
+        /// The head of the mixin list for extending collection behavior.
+        /// </summary>
+        /// <summary>
+        /// Gets all mixins applied to this dictionary for extension.
+        /// </summary>
         {
             get
             {

@@ -5,7 +5,9 @@ using System.Text;
 
 namespace Pxtl.Collections
 {
-    public class DefaultingDict<K, V> : VirtualDict<K, V>
+    /// <summary>
+    /// A dictionary that provides default values for missing keys.
+    /// </summary>
     {
         // Underlying dictionary - everything delegates
         // to this.
