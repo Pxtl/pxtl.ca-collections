@@ -1,13 +1,14 @@
 namespace PxtlCa.Collections;
+
 using PxtlCa.Collections.DictMixins;
 
-public class AutoConstructingDict<K, V> : MixableDict<K, V> 
+public class AutoConstructingDict<K, V> : MixableDict<K, V>
 where V : new() {
     public AutoConstructingDict() : base() {
         Initialize();
     }
 
-    public AutoConstructingDict(IEqualityComparer<K> comparer) 
+    public AutoConstructingDict(IEqualityComparer<K> comparer)
     : base(comparer) {
         Initialize();
     }

@@ -7,44 +7,37 @@ namespace PxtlCa.Collections;
 /// A dictionary allowing mixin extensions for custom behavior.
 /// </summary>
 public class MixableDict<K, V> : VirtualDict<K, V> {
-    public MixableDict() : base()
-    {
+    public MixableDict() : base() {
         _mixinListHead = new DictMixinLinkNode(new TerminalDictMixin(BaseDict), BaseDict);
     }
 
     public MixableDict(IEqualityComparer<K> comparer)
-        : base(comparer)
-    {
+        : base(comparer) {
         _mixinListHead = new DictMixinLinkNode(new TerminalDictMixin(BaseDict), BaseDict);
     }
 
     public MixableDict(int capacity)
-        : base(capacity)
-    {
+        : base(capacity) {
         _mixinListHead = new DictMixinLinkNode(new TerminalDictMixin(BaseDict), BaseDict);
     }
 
     public MixableDict(int capacity, IEqualityComparer<K> comparer)
-        : base(capacity, comparer)
-    {
+        : base(capacity, comparer) {
         _mixinListHead = new DictMixinLinkNode(new TerminalDictMixin(BaseDict), BaseDict);
     }
 
     public MixableDict(IDictionary<K, V> originalDictionary)
-        : base(originalDictionary)
-    {
+        : base(originalDictionary) {
         _mixinListHead = new DictMixinLinkNode(new TerminalDictMixin(BaseDict), BaseDict);
     }
 
     protected MixableDict(IDictionary<K, V> originalDictionary, bool wrap)
-        : base(originalDictionary, wrap)
-    {
+        : base(originalDictionary, wrap) {
         _mixinListHead = new DictMixinLinkNode(new TerminalDictMixin(BaseDict), BaseDict);
     }
 
     public MixableDict(IDictionary<K, V> originalDictionary, IEqualityComparer<K> comparer)
-        : base(originalDictionary, comparer)
-    {
+        : base(originalDictionary, comparer) {
         _mixinListHead = new DictMixinLinkNode(new TerminalDictMixin(BaseDict), BaseDict);
     }
 
@@ -57,22 +50,18 @@ public class MixableDict<K, V> : VirtualDict<K, V> {
     /// Gets all mixins applied to this dictionary for extension.
     /// </summary>
     public IEnumerable<DictMixin<K, V>> Mixins {
-        get
-        {
+        get {
             var mixinHolder = _mixinListHead;
-            while (true)
-            {
+            while (true) {
                 yield return mixinHolder.Mixin;
                 if (mixinHolder is DictMixinLinkNode) {
                     mixinHolder = ((DictMixinLinkNode)mixinHolder).NextMixin;
                 }
             }
         }
-        set
-        {
+        set {
             var mixins = new DictMixinLinkNode(new TerminalDictMixin(BaseDict), BaseDict);
-            foreach (DictMixin<K, V> mixin in value)
-            {
+            foreach (DictMixin<K, V> mixin in value) {
                 IDictMixinHolder oldHeadMixin = mixins;
                 mixins = new DictMixinLinkNode(mixin, BaseDict);
                 mixins.NextMixin = oldHeadMixin;
@@ -83,95 +72,76 @@ public class MixableDict<K, V> : VirtualDict<K, V> {
         }
     }
 
-    protected void _InitializeMixins()
-    {
+    protected void _InitializeMixins() {
         _mixinListHead = new DictMixinLinkNode(new TerminalDictMixin(BaseDict), BaseDict);
         _mixinListHead.SetDict(this);
     }
 
-    public override V this[K key]
-    {
-        get
-        {
+    public override V this[K key] {
+        get {
             return _mixinListHead[key];
         }
-        set
-        {
+        set {
             _mixinListHead[key] = value;
         }
     }
 
-    public override bool Remove(K key)
-    {
+    public override bool Remove(K key) {
         return _mixinListHead.Remove(key);
     }
 
-    public override void Add(K key, V value)
-    {
+    public override void Add(K key, V value) {
         _mixinListHead.Add(key, value);
     }
 
-    public override ICollection<K> Keys
-    {
+    public override ICollection<K> Keys {
         get { return _mixinListHead.Keys; }
     }
 
-    public override ICollection<V> Values
-    {
+    public override ICollection<V> Values {
         get { return _mixinListHead.Values; }
     }
 
-    public override bool ContainsKey(K key)
-    {
+    public override bool ContainsKey(K key) {
         return _mixinListHead.ContainsKey(key);
     }
 
-    public override bool Contains(KeyValuePair<K, V> item)
-    {
+    public override bool Contains(KeyValuePair<K, V> item) {
         return _mixinListHead.Contains(item);
     }
-    public override bool Remove(KeyValuePair<K, V> item)
-    {
+    public override bool Remove(KeyValuePair<K, V> item) {
         return _mixinListHead.Remove(item);
     }
-    public override void Clear()
-    {
+    public override void Clear() {
         _mixinListHead.Clear();
     }
-    public override int Count
-    {
+    public override int Count {
         get { return _mixinListHead.Count; }
     }
 
-    public override void Add(KeyValuePair<K, V> item)
-    {
+    public override void Add(KeyValuePair<K, V> item) {
         _mixinListHead.Add(item.Key, item.Value);
     }
-    public override void CopyTo(KeyValuePair<K, V>[] array, int arrayIndex)
-    {
+    public override void CopyTo(KeyValuePair<K, V>[] array, int arrayIndex) {
         _mixinListHead.CopyTo(array, arrayIndex);
     }
 
-    public override IEnumerator GetObjectEnumerator()
-    {
+    public override IEnumerator GetObjectEnumerator() {
         return _mixinListHead.GetObjectEnumerator();
     }
 
     /// <summary>
     /// Returns an ordered KeyValuePair enumerator.
     /// </summary>
-    public override IEnumerator<KeyValuePair<K, V>> GetGenericEnumerator()
-    {
+    public override IEnumerator<KeyValuePair<K, V>> GetGenericEnumerator() {
         return _mixinListHead.GetGenericEnumerator();
     }
 
-    public override bool TryGetValue(K key, out V val)
-    {
+    public override bool TryGetValue(K key, out V val) {
         return _mixinListHead.TryGetValue(key, out val);
     }
 
-    public class TerminalDictMixin : DictMixin<K, V>, IDictMixinHolder
-    {
+    public class TerminalDictMixin : DictMixin<K, V>, IDictMixinHolder {
         private IDictionary<K, V> _baseDict;
 
         #region IDictMixinHolder Members
@@ -191,82 +161,66 @@ public class MixableDict<K, V> : VirtualDict<K, V> {
         #endregion
 
         #region Constuctors
-        internal protected TerminalDictMixin(IDictionary<K, V> baseDict) 
-        {
+        internal protected TerminalDictMixin(IDictionary<K, V> baseDict) {
             _baseDict = baseDict;
         }
         #endregion
 
         #region DictMixin Members
-        public override bool Remove(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, K key)
-        {
+        public override bool Remove(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, K key) {
             return _baseDict.Remove(key);
         }
-        public override void Add(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, K key, V value)
-        {
+        public override void Add(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, K key, V value) {
             _baseDict.Add(key, value);
         }
-        public override ICollection<K> GetKeys(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin)
-        {
+        public override ICollection<K> GetKeys(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin) {
             return _baseDict.Keys;
         }
-        public override ICollection<V> GetValues(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin)
-        {
+        public override ICollection<V> GetValues(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin) {
             return _baseDict.Values;
         }
 
-        public override bool ContainsKey(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, K key)
-        {
+        public override bool ContainsKey(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, K key) {
             return _baseDict.ContainsKey(key);
         }
 
-        public override bool Contains(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, KeyValuePair<K, V> item)
-        {
+        public override bool Contains(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, KeyValuePair<K, V> item) {
             return _baseDict.Contains(item);
         }
 
-        public override bool Remove(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, KeyValuePair<K, V> item)
-        {
+        public override bool Remove(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, KeyValuePair<K, V> item) {
             return _baseDict.Remove(item);
         }
 
-        public override void Clear(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin)
-        {
+        public override void Clear(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin) {
             _baseDict.Clear();
         }
 
-        public override int GetCount(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin)
-        {
+        public override int GetCount(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin) {
             return _baseDict.Count;
         }
 
-        public override void CopyTo(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, KeyValuePair<K, V>[] array, int arrayIndex)
-        {
+        public override void CopyTo(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, KeyValuePair<K, V>[] array, int arrayIndex) {
             _baseDict.CopyTo(array, arrayIndex);
         }
 
-        public override IEnumerator GetObjectEnumerator(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin)
-        {
+        public override IEnumerator GetObjectEnumerator(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin) {
             return (_baseDict as IEnumerable).GetEnumerator();
         }
 
-        public override IEnumerator<KeyValuePair<K, V>> GetGenericEnumerator(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin)
-        {
+        public override IEnumerator<KeyValuePair<K, V>> GetGenericEnumerator(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin) {
             return (_baseDict as IEnumerable<KeyValuePair<K, V>>).GetEnumerator();
         }
 
-        public override bool TryGetValue(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, K key, out V val)
-        {
+        public override bool TryGetValue(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder nextMixin, K key, out V val) {
             return _baseDict.TryGetValue(key, out val);
         }
 
-        public override V GetVal(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder NextMixin, K key)
-        {
+        public override V GetVal(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder NextMixin, K key) {
             return _baseDict[key];
         }
 
-        public override void SetVal(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder NextMixin, K key, V value)
-        {
+        public override void SetVal(IDictionary<K, V> thisDict, MixableDict<K, V>.IDictMixinHolder NextMixin, K key, V value) {
             _baseDict[key] = value;
         }
 
@@ -378,13 +332,13 @@ public class MixableDict<K, V> : VirtualDict<K, V> {
             Mixin.Add(_thisDict!, NextMixin, key, value);
         }
         public ICollection<K> Keys {
-            get { 
+            get {
                 ThrowIfThisDictNull();
                 return Mixin.GetKeys(_thisDict!, NextMixin);
             }
         }
         public ICollection<V> Values {
-            get { 
+            get {
                 ThrowIfThisDictNull();
                 return Mixin.GetValues(_thisDict!, NextMixin);
             }

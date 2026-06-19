@@ -1,5 +1,4 @@
-namespace PxtlCa.Collections.DictMixins
-{
+namespace PxtlCa.Collections.DictMixins {
     public class NullReferenceTypeDefaultingDictMixin<K, V> : DefaultingDictMixin<K, V>
     where V : class? {
         protected override bool TryGetDefaultValue(K key, out V val) {
