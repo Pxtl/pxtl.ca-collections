@@ -16,6 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PxtlCa.Collections\PxtlCa.Collections.csproj" />
+    <ProjectReference Include="..\Collections\PxtlCa.Collections.csproj" />
   </ItemGroup>
 </Project>

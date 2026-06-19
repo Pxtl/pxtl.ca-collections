@@ -1,9 +1,9 @@
 namespace PxtlCa.Collections.DictionaryFilters;
 
-public class DelegateDefaultingDictionaryFilter<K, V> : DefaultingDictionaryFilter<K, V> {
+public class DelegateDefaultingDictionaryFilter<TKey, TValue> : DefaultingDictionaryFilter<TKey, TValue> {
     public DelegateDefaultingDictionaryFilter() : base() { }
 
-    public DelegateDefaultingDictionaryFilter(ValueConstructor<K, V>? constructor)
+    public DelegateDefaultingDictionaryFilter(ValueConstructor<TKey, TValue>? constructor)
     : this() {
         ValueConstructionHandler = constructor;
     }
@@ -11,7 +11,7 @@ public class DelegateDefaultingDictionaryFilter<K, V> : DefaultingDictionaryFilt
     /// <exception cref="NullPropertyException">
     /// Throws if ValueConstructionHandler is not set.
     /// </exception>
-    protected override bool TryGetDefaultValue(K key, out V val) {
+    protected override bool TryGetDefaultValue(TKey key, out TValue val) {
         if (ValueConstructionHandler == null) {
             val = default!;
             return false;
@@ -26,8 +26,8 @@ public class DelegateDefaultingDictionaryFilter<K, V> : DefaultingDictionaryFilt
     /// The default constructor to make dictionary objects if a value is not
     /// already present in the dictionary. 
     /// </summary>
-    public ValueConstructor<K, V>? ValueConstructionHandler { get; set; }
+    public ValueConstructor<TKey, TValue>? ValueConstructionHandler { get; set; }
     #endregion
 }
 
-public delegate V ValueConstructor<K, V>(K key);
+public delegate TValue ValueConstructor<TKey, TValue>(TKey key);

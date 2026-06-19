@@ -5,32 +5,32 @@ namespace PxtlCa.Collections;
 /// <summary>
 /// A dictionary that provides default values for missing keys.
 /// </summary>
-public class DefaultingDictionary<K, V> : MixableDictionary<K, V> {
+public class DefaultingDictionary<TKey, TValue> : MixableDictionary<TKey, TValue> {
     public DefaultingDictionary() : base() {
         Filters = [_delegateDefaultingDictionaryFilter];
     }
 
-    public DefaultingDictionary(IEqualityComparer<K> comparer)
+    public DefaultingDictionary(IEqualityComparer<TKey> comparer)
         : base(comparer) { }
 
     public DefaultingDictionary(int capacity)
         : base(capacity) { }
 
-    public DefaultingDictionary(int capacity, IEqualityComparer<K> comparer)
+    public DefaultingDictionary(int capacity, IEqualityComparer<TKey> comparer)
         : base(capacity, comparer) { }
 
-    public DefaultingDictionary(IDictionary<K, V> originalDictionary)
+    public DefaultingDictionary(IDictionary<TKey, TValue> originalDictionary)
         : base(originalDictionary) { }
 
-    protected DefaultingDictionary(IDictionary<K, V> originalDictionary, bool wrap)
+    protected DefaultingDictionary(IDictionary<TKey, TValue> originalDictionary, bool wrap)
         : base(originalDictionary, wrap) { }
 
-    public DefaultingDictionary(IDictionary<K, V> originalDictionary, IEqualityComparer<K> comparer)
+    public DefaultingDictionary(IDictionary<TKey, TValue> originalDictionary, IEqualityComparer<TKey> comparer)
         : base(originalDictionary, comparer) { }
 
-    private DelegateDefaultingDictionaryFilter<K, V> _delegateDefaultingDictionaryFilter = new();
+    private DelegateDefaultingDictionaryFilter<TKey, TValue> _delegateDefaultingDictionaryFilter = new();
 
-    public ValueConstructor<K, V>? ValueConstructionHandler {
+    public ValueConstructor<TKey, TValue>? ValueConstructionHandler {
         get => _delegateDefaultingDictionaryFilter.ValueConstructionHandler;
         set { _delegateDefaultingDictionaryFilter.ValueConstructionHandler = value; }
     }

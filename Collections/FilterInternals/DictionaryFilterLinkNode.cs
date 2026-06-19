@@ -4,26 +4,26 @@ using PxtlCa.Collections.Polyfills;
 namespace PxtlCa.Collections.FilterInternals;
 
 /// <summary>
-/// The body nodes of the linked-list of a <see cref="MixableDictionary{K,
-/// V}"/>.  Each node contains a link to its successor.
+/// The body nodes of the linked-list of a <see cref="MixableDictionary{TKey,
+/// TValue}"/>.  Each node contains a link to its successor.
 /// </summary>
-internal sealed class DictionaryFilterLinkNode<K, V> : VirtualDictionary<K, V>, IDictionaryFilterNode<K, V> {
+internal sealed class DictionaryFilterLinkNode<TKey, TValue> : VirtualDictionary<TKey, TValue>, IDictionaryFilterNode<TKey, TValue> {
     #region Constructors
-    internal DictionaryFilterLinkNode(IDictionaryFilter<K, V> filter, IDictionary<K, V> mixableDictionary) : base(mixableDictionary, wrap: true) {
+    internal DictionaryFilterLinkNode(IDictionaryFilter<TKey, TValue> filter, IDictionary<TKey, TValue> mixableDictionary) : base(mixableDictionary, wrap: true) {
         ArgumentGuard.ThrowIfNull(filter, nameof(filter));
-        NextFilter = new DictionaryFilterTerminalNode<K, V>(mixableDictionary);
+        NextFilter = new DictionaryFilterTerminalNode<TKey, TValue>(mixableDictionary);
         Filter = filter!;
     }
 
-    internal DictionaryFilterLinkNode(IDictionaryFilter<K, V> filter, IDictionary<K, V> mixableDictionary, IDictionaryFilterNode<K, V> nextFilter) : this(filter, mixableDictionary) {
+    internal DictionaryFilterLinkNode(IDictionaryFilter<TKey, TValue> filter, IDictionary<TKey, TValue> mixableDictionary, IDictionaryFilterNode<TKey, TValue> nextFilter) : this(filter, mixableDictionary) {
         ArgumentGuard.ThrowIfNull(nextFilter, nameof(nextFilter));
         NextFilter = nextFilter;
     }
     #endregion
 
     #region Data Members
-    public IDictionaryFilter<K, V> Filter { get; }
-    internal IDictionaryFilterNode<K, V> NextFilter { get; set; }
+    public IDictionaryFilter<TKey, TValue> Filter { get; }
+    internal IDictionaryFilterNode<TKey, TValue> NextFilter { get; set; }
     #endregion
 
     private void ThrowIfWrappedDictNull() {
@@ -32,7 +32,7 @@ internal sealed class DictionaryFilterLinkNode<K, V> : VirtualDictionary<K, V>, 
         }
     }
 
-    public void SetDictionary(MixableDictionary<K, V> wrappedDictionary) {
+    public void SetDictionary(MixableDictionary<TKey, TValue> wrappedDictionary) {
         ThrowIfWrappedDictNull();
         WrappedDictionary = wrappedDictionary;
         NextFilter.SetDictionary(wrappedDictionary);
@@ -40,7 +40,7 @@ internal sealed class DictionaryFilterLinkNode<K, V> : VirtualDictionary<K, V>, 
 
     #region Dictionary Methods
 
-    public override V this[K key] {
+    public override TValue this[TKey key] {
         get {
             return Filter.GetVal(WrappedDictionary, NextFilter, key);
         }
@@ -49,37 +49,37 @@ internal sealed class DictionaryFilterLinkNode<K, V> : VirtualDictionary<K, V>, 
         }
     }
 
-    public override bool Remove(K key) {
+    public override bool Remove(TKey key) {
         return Filter.Remove(WrappedDictionary, NextFilter, key);
     }
-    public override void Add(K key, V value) {
+    public override void Add(TKey key, TValue value) {
         Filter.Add(WrappedDictionary, NextFilter, key, value);
     }
 
-    public override void Add(KeyValuePair<K, V> pair) {
+    public override void Add(KeyValuePair<TKey, TValue> pair) {
         Add(pair.Key, pair.Value);
     }
 
-    public override ICollection<K> Keys {
+    public override ICollection<TKey> Keys {
         get {
             return Filter.GetKeys(WrappedDictionary, NextFilter);
         }
     }
-    public override ICollection<V> Values {
+    public override ICollection<TValue> Values {
         get {
             return Filter.GetValues(WrappedDictionary, NextFilter);
         }
     }
 
-    public override bool ContainsKey(K key) {
+    public override bool ContainsKey(TKey key) {
         return Filter.ContainsKey(WrappedDictionary, NextFilter, key);
     }
 
-    public override bool Contains(KeyValuePair<K, V> item) {
+    public override bool Contains(KeyValuePair<TKey, TValue> item) {
         return Filter.Contains(WrappedDictionary, NextFilter, item);
     }
 
-    public override bool Remove(KeyValuePair<K, V> item) {
+    public override bool Remove(KeyValuePair<TKey, TValue> item) {
         return Filter.Remove(WrappedDictionary!, NextFilter, item);
     }
 
@@ -93,7 +93,7 @@ internal sealed class DictionaryFilterLinkNode<K, V> : VirtualDictionary<K, V>, 
         }
     }
 
-    public override void CopyTo(KeyValuePair<K, V>[] array, int arrayIndex) {
+    public override void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
         Filter.CopyTo(WrappedDictionary!, NextFilter, array, arrayIndex);
     }
 
@@ -101,11 +101,11 @@ internal sealed class DictionaryFilterLinkNode<K, V> : VirtualDictionary<K, V>, 
         return Filter.GetObjectEnumerator(WrappedDictionary!, NextFilter);
     }
 
-    public override IEnumerator<KeyValuePair<K, V>> GetGenericEnumerator() {
+    public override IEnumerator<KeyValuePair<TKey, TValue>> GetGenericEnumerator() {
         return Filter.GetEnumerator(WrappedDictionary!, NextFilter);
     }
 
-    public override bool TryGetValue(K key, out V val) {
+    public override bool TryGetValue(TKey key, out TValue val) {
         return Filter.TryGetValue(WrappedDictionary!, NextFilter, key, out val);
     }
 
