@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
-    <Using Include="FluentAssertions.Execution" />
+    <Using Include="FluentAssertions" />
   </ItemGroup>
 
   <ItemGroup>

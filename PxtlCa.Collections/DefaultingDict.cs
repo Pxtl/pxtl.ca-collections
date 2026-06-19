@@ -29,5 +29,9 @@ public class DefaultingDict<K, V> : MixableDict<K, V> {
         : base(originalDictionary, comparer) { }
 
     private DelegateDefaultingDictMixin<K, V> _delegateDefaultingDictMixin = new DelegateDefaultingDictMixin<K, V>();
-    public ValueConstructor<K, V>? ValueConstructionHandler => _delegateDefaultingDictMixin.ValueConstructionHandler;
+
+    public ValueConstructor<K, V>? ValueConstructionHandler {
+        get => _delegateDefaultingDictMixin.ValueConstructionHandler;
+        set { _delegateDefaultingDictMixin.ValueConstructionHandler = value; }
+    }
 }

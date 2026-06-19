@@ -1,7 +1,6 @@
 namespace PxtlCa.Collections;
 
-public class NullPropertyException : Exception
-{
+public class NullPropertyException : Exception {
     public NullPropertyException() { }
 
     public NullPropertyException(string? message, string propertyName) : base(ResolveMessage(message, propertyName)) {

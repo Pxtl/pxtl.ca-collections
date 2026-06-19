@@ -1,11 +1,11 @@
 namespace PxtlCa.Collections;
 
-public class NullProxyValueException : Exception
-{
+public class NullProxyValueException : Exception {
     public NullProxyValueException() { }
 
-    public NullProxyValueException(string? message) : base(message) { }
+    public NullProxyValueException(string? message)
+    : base(message) { }
 
-    public NullProxyValueException(string? message, Exception? innerException) 
-        : base(message, innerException) { }
+    public NullProxyValueException(string? message, Exception? innerException)
+    : base(message, innerException) { }
 }

@@ -4,11 +4,13 @@ public class DelegateDefaultingDictMixin<K, V> : DefaultingDictMixin<K, V> {
     public DelegateDefaultingDictMixin() : base() { }
 
     public DelegateDefaultingDictMixin(ValueConstructor<K, V>? constructor)
-        : this() {
+    : this() {
         ValueConstructionHandler = constructor;
     }
 
-    /// <exception cref="NullPropertyException">Throws if ValueConstructionHandler is not set.</exception>
+    /// <exception cref="NullPropertyException">
+    /// Throws if ValueConstructionHandler is not set.
+    /// </exception>
     protected override bool TryGetDefaultValue(K key, out V val) {
         if (ValueConstructionHandler == null) {
             val = default(V)!;

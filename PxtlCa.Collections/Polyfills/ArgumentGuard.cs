@@ -1,11 +1,8 @@
-namespace PxtLCa.Collections.Polyfills;
+namespace PxtlCa.Collections.Polyfills;
 
-public static class ArgumentGuard
-{
-    public static void ThrowIfNull(object? argument, string paramName)
-    {
-        if (null == argument)
-        {
+public static class ArgumentGuard {
+    public static void ThrowIfNull(object? argument, string paramName) {
+        if (null == argument) {
             throw new ArgumentNullException(paramName);
         }
     }
