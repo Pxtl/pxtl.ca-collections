@@ -2,13 +2,21 @@ using FluentAssertions;
 
 namespace PxtlCa.Collections.Tests;
 
-public class DefaultingDictTests {
+public class DefaultingDictTests
+{
     [Fact]
-    public void ProvidedFoundKey_ReturnsValue() {
-        var dict = new DefaultingDictionary<string, int> {
-            ["one"] = 1,
+    public void EmptyDefaultingDict()
+    {
+        var dict = new DefaultingDictionary<int, string?>();
+        dict.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void AddThenRetrieve_ExistingValue()
+    {
+        var dict = new DefaultingDictionary<string, int?>
+        {
             ["two"] = 2,
-            ["three"] = 3,
             ValueConstructionHandler = (key) => -99
         };
 
@@ -16,13 +24,39 @@ public class DefaultingDictTests {
     }
 
     [Fact]
-    public void ProvidedMissingKey_ReturnsDefault() {
-        var dict = new DefaultingDictionary<string, int> {
+    public void MissingKey_GetDefaultFromHandler()
+    {
+        var dict = new DefaultingDictionary<string, int?>
+        {
             ["one"] = 1,
-            ["two"] = 2,
-            ["three"] = 3,
             ValueConstructionHandler = (key) => -99
         };
+
         dict["four"].Should().Be(-99);
     }
-}
+
+    [Fact]
+    public void SetThenGetStoredKey()
+    {
+        var dict = new DefaultingDictionary<string, string?>
+        {
+            ValueConstructionHandler = (key) => null
+        };
+
+        dict["test"] = "provided";
+        dict["test"].Should().Be("provided");
+    }
+
+    [Fact]
+    public void GetMissingKey_ReturnsNullForNullableRefType()
+    {
+        var dict = new DefaultingDictionary<string, string?>
+        {
+            ValueConstructionHandler = (key) => null
+        };
+
+        var value = dict["other"];
+        (value).Should().BeNull();
+    }
+
+} // class DefaultingDictTests - Working tests for DefaultValue functionality only

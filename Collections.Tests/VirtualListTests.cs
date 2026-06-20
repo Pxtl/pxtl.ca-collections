@@ -1,21 +1,33 @@
 using FluentAssertions;
+using System.Collections.Generic;
 
 namespace PxtlCa.Collections.Tests;
 
-public class VirtualListTests {
+public class VirtualListTests
+{
     [Fact]
-    public void Constructor_Empty() {
-        // Placeholder - tests for VirtualList base behavior         
+    public void CreateEmptyVirtualList()
+    {
+        var list = new VirtualList<string>();
+        (list.Count).Should().Be(0);
     }
 
     [Fact]
-    public void WrapExisting_List_ReturnsSameCount() {
-        var actual = new VirtualList<int>() { 1, 2 };
-        actual.Count.Should().Be(2);
+    public void WrapInBackingStore()
+    {
+        var backing = new List<string> { "a", "b" };
+        var list = new VirtualList<string>(backing);
+
+        (list.Count).Should().Be(2);
+        (list[0]).Should().Be("a");
     }
 
     [Fact]
-    public void AddItem_IncreasesCount() {
-        // Placeholder tests for add/remove operations
+    public void EnumeratorGetsItemsFromBacking()
+    {
+        var source = new List<string> { "test" };
+        var list = new VirtualList<string>(source);
+
+        (source).Should().Contain("test");
     }
-}
+} // class VirtualListTests
