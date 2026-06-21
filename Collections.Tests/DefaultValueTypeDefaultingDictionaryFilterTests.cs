@@ -5,7 +5,7 @@ namespace PxtlCa.Collections.Tests;
 public class DefaultValueTypeDefaultingDictFilterTests
 {
     [Fact]
-    public void StructDefault_ReturnsZeroForIntType()
+    public void StructDefault_ReturnsNullForNullableIntType()
     {
         var dict = new DefaultingDictionary<string, int?>
         {
