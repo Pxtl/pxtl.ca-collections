@@ -1,10 +1,8 @@
-namespace PxtlCa.Collections
-{
+namespace PxtlCa.Collections {
     /// <summary>
     /// A virtual list that delegates to another IList implementation.
     /// </summary>
-    public class VirtualList<T> : IList<T>
-    {
+    public class VirtualList<T> : IList<T> {
         protected readonly IList<T> list;
 
         /// <summary>Creates an empty VirtualList using List&lt;T&gt; as backing store.</summary>
@@ -28,15 +26,12 @@ namespace PxtlCa.Collections
         public virtual void RemoveAt(int index) => list!.RemoveAt(index);
 
         /// <summary>Gets or sets a element by index in the collection.</summary>
-        public virtual T this[int index]
-        {
-            get
-            {
+        public virtual T this[int index] {
+            get {
                 return list[index];
             }
 
-            set
-            {
+            set {
                 list[index] = value!;
             }
         }
@@ -84,8 +79,8 @@ namespace PxtlCa.Collections
 
         #region IEnumerable Members
 
-System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-            => (System.Collections.IEnumerator)list;
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+                    => (System.Collections.IEnumerator)list;
 #pragma warning restore IDE0058, CS8632 // Conditional expression should be simplified.
 
         #endregion IEnumerable Members
