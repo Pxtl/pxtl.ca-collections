@@ -13,6 +13,7 @@ public class AutoConstructingDictFilterBehaviorTests
         // Access missing key triggers auto-construction (zero for int)  
         // Using int key 0 to satisfy TKey constraint
         _ = dict[0];
-    }
 
-} // class AutoConstructingDictFilterBehaviorTests - Auto-construction filter tests for iteration 5
+        dict[0].Should().Be(0);
+    }
+}
