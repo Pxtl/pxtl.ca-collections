@@ -14,4 +14,4 @@ public class MixableDictWrapModeTests
         (wrapped.ContainsKey("key")).Should().BeTrue();
     }
 
-} // class MixableDictWrapModeTests
+}
