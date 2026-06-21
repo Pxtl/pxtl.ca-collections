@@ -2,11 +2,9 @@ using FluentAssertions;
 
 namespace PxtlCa.Collections.Tests;
 
-public class AutoConstructingDictTests
-{
+public class AutoConstructingDictTests {
     [Fact]
-    public void EmptyAutoConstructing()
-    {
+    public void EmptyAutoConstructing() {
         var dict = new AutoConstructingDictionary<int, int>();
         (dict.Count).Should().Be(0);
     }
