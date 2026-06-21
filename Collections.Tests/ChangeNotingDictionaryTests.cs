@@ -8,7 +8,10 @@ public class ChangeNotingDictTests
     [Fact]
     public void NoteChangesDisabled()
     {
-        _ = new ChangeNotingDictionary<string, string> { NoteChanges = false };
+        var dict = new ChangeNotingDictionary<string, string>
+        {
+            NoteChanges = false
+        };
+        (dict.Count).Should().Be(0);
     }
-
-} // class ChangeNotingDictTests - Simple test for compile check only
+}

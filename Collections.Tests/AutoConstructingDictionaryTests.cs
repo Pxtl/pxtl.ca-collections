@@ -8,6 +8,6 @@ public class AutoConstructingDictTests
     public void EmptyAutoConstructing()
     {
         var dict = new AutoConstructingDictionary<int, int>();
+        (dict.Count).Should().Be(0);
     }
-
-} // class AutoConstructingDictTests
+}

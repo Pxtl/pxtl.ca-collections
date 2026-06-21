@@ -27,7 +27,11 @@ public class VirtualListTests
     {
         var source = new List<string> { "test" };
         var list = new VirtualList<string>(source);
+        (list.Count).Should().Be(1);
 
-        (source).Should().Contain("test");
+        foreach (var item in list)
+        {
+            item.Should().Be("test");
+        }
     }
-} // class VirtualListTests
+}

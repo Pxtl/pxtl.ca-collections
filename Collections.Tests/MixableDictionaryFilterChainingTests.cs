@@ -9,7 +9,6 @@ public class MixableDictFilterChainingTests
     public void CreateMultipleFilters_ChainOnMixable()
     {
         var dict = new MixableDictionary<string, int?>();
-        _ = dict;
+        (dict.Count).Should().Be(0);
     }
-
-} // class MixableDictFilterChainingTests - Completed for iteration 5
+} // class MixableDictFilterChainingTests

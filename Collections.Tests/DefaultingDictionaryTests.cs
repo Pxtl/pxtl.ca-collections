@@ -55,8 +55,6 @@ public class DefaultingDictTests
             ValueConstructionHandler = (key) => null
         };
 
-        var value = dict["other"];
-        (value).Should().BeNull();
+        dict["other"].Should().BeNull();
     }
-
-} // class DefaultingDictTests - Working tests for DefaultValue functionality only
+}

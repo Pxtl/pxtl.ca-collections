@@ -8,10 +8,10 @@ public class MixableDictWrapModeTests
     [Fact]
     public void WrapCopiesExistingData()
     {
-        var original = new System.Collections.Generic.Dictionary<string, int> { ["key"] = 10 };
-        
-        // The Wrap method wraps in MixableDictionary - copy data into container  
-        // This tests that existing dictionary items are preserved when wrapped
+        var original = new System.Collections.Generic.Dictionary<string, int?> { ["key"] = 10 };
+
+        var wrapped = MixableDictFactory.Wrap<string, int?>(original);
+        (wrapped.ContainsKey("key")).Should().BeTrue();
     }
 
-} // class MixableDictWrapModeTests - Static wrap functionality tests completed for iteration 5
+} // class MixableDictWrapModeTests
