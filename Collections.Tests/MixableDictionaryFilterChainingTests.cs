@@ -9,4 +9,4 @@ public class MixableDictFilterChainingTests {
         var dict = new MixableDictionary<string, int?>();
         (dict.Count).Should().Be(0);
     }
-} // class MixableDictFilterChainingTests
+}

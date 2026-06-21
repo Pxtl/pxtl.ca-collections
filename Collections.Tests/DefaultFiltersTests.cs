@@ -11,4 +11,4 @@ public class DefaultFiltersTests {
         (dict["test"]).Should().Contain("test");
     }
 
-} // class DefaultFiltersTests - Delegate filter test completed for iteration 3
+}

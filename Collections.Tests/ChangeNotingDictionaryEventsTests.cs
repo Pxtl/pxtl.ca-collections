@@ -18,4 +18,4 @@ public class ChangeNoteHandlerTests {
         // Check event handler signature works with key parameter  
     }
 
-} // class ChangeNoteHandlerTests - Change event handler behavior
+}
