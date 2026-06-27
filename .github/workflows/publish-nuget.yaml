@@ -24,13 +24,13 @@ jobs:
             8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore PxtlCa.SystemCollectionsExtensions.slnx
+        run: dotnet restore *.slnx
 
       - name: Build solution
-        run: dotnet build PxtlCa.SystemCollectionsExtensions.slnx --no-restore --configuration Release
+        run: dotnet build *.slnx --no-restore --configuration Release
 
       - name: Build NuGet package
-        run: dotnet pack PxtlCa.SystemCollectionsExtensions.slnx --no-build --configuration Release --output ./nuget
+        run: dotnet pack *.slnx --no-build --configuration Release --output ./nuget
 
       # Get a short-lived NuGet API key
       - name: NuGet login (OIDC → temp API key)
