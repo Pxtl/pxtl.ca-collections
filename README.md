@@ -23,6 +23,14 @@ FilteredDictionaries exist in the form of `AutoConstructingDictionary`,
 `DefaultingDictionary`, and `ChangeNotingDictionary`, which each of which are a
 subclass of FilteredDictionary with a Filter baked-in.
 
+# PxtlCa.ObjectProxies
+
+A second project `PxtlCa.ObjectProxies` is included in the source but not built
+for the nuget package.  It is a set of pseudo-pointer generics in C#.  I don't
+really remember what I was going for with these.  This may be mostly an artifact
+of .NET 2.0 since `Expression` objects have replaced the need for that
+generally.
+
 # AI Disclosure
 
 While this code is primarily hand-made, a Qwen 3.5 AI was used to modernize the

@@ -1,0 +1,39 @@
+name: Publish NuGet
+
+on:
+  workflow_dispatch:
+
+  workflow_run:
+    workflows: ["Validate"]
+    branches: [main]
+    types: [completed]
+
+jobs:
+  publish:
+    if: github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            10.x
+            8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore PxtlCa.SystemCollectionsExtensions.slnx
+
+      - name: Build solution
+        run: dotnet build PxtlCa.SystemCollectionsExtensions.slnx --no-restore --configuration Release
+
+      - name: Build NuGet package
+        run: dotnet pack PxtlCa.SystemCollectionsExtensions.slnx --no-build --configuration Release --output ./nuget
+
+      - name: Publish to NuGet.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          dotnet nuget push nuget/*.nupkg --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate

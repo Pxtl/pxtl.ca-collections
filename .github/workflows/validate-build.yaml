@@ -1,4 +1,4 @@
-name: Run Tests
+name: Validate
 
 on:
   push:
@@ -22,9 +22,6 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore PxtlCa.Collections.slnx --verbosity normal
-
-      - name: Build library and tests
-        run: dotnet build PxtlCa.Collections.slnx --no-restore --configuration Release -p:TreatWarningsAsErrors=false
 
       - name: Build solution
         run: dotnet build PxtlCa.Collections.slnx --no-restore --configuration Release

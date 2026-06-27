@@ -8,19 +8,21 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
-    <!-- Disable auto-generation of AssemblyInfo to allow existing metadata from Properties/AssemblyInfo.cs -->
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>$(NoWarn);1591</NoWarn>    
   </PropertyGroup>
 
   <PropertyGroup>
+    <ProjectGuid>668de199-9787-4f1c-b3cb-c0a5cf9732a7</ProjectGuid>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Packagedoc>README.md</Packagedoc>
-    <PackageId>pxtl.ca-collections</PackageId>
+    <PackageId>PxtlCa.Collections</PackageId>
     <Authors>Martin Zarate (AKA Pxtl)</Authors>
-    <Description>Custom collections for .NET Standard 2.0.  Includes
-    overrideable virtual wrappers for Dictionary and List and various
-    utility-versions of Dictionary.</Description>
+    <Description>
+      Custom collections for .NET Standard 2.0.  Includes overrideable virtual
+      wrappers for Dictionary and List and various utility-versions of
+      Dictionary.
+    </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Pxtl/pxtl.ca-collections</PackageProjectUrl>
     <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
@@ -30,7 +32,13 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- coding standards -->
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +48,7 @@
 
   <ItemGroup>
     <None Include="../README.md" Pack="True" PackagePath="" />
+    <None Include="../LICENSE" Pack="True" PackagePath="" />
   </ItemGroup>
 
 </Project>
