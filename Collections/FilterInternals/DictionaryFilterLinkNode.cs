@@ -4,18 +4,18 @@ using PxtlCa.Collections.Polyfills;
 namespace PxtlCa.Collections.FilterInternals;
 
 /// <summary>
-/// The body nodes of the linked-list of a <see cref="MixableDictionary{TKey,
+/// The body nodes of the linked-list of a <see cref="FilteredDictionary{TKey,
 /// TValue}"/>.  Each node contains a link to its successor.
 /// </summary>
 internal sealed class DictionaryFilterLinkNode<TKey, TValue> : VirtualDictionary<TKey, TValue>, IDictionaryFilterNode<TKey, TValue> {
     #region Constructors
-    internal DictionaryFilterLinkNode(IDictionaryFilter<TKey, TValue> filter, IDictionary<TKey, TValue> mixableDictionary) : base(mixableDictionary, wrap: true) {
+    internal DictionaryFilterLinkNode(IDictionaryFilter<TKey, TValue> filter, IDictionary<TKey, TValue> filteredDictionary) : base(filteredDictionary, wrap: true) {
         ArgumentGuard.ThrowIfNull(filter, nameof(filter));
-        NextFilter = new DictionaryFilterTerminalNode<TKey, TValue>(mixableDictionary);
+        NextFilter = new DictionaryFilterTerminalNode<TKey, TValue>(filteredDictionary);
         Filter = filter!;
     }
 
-    internal DictionaryFilterLinkNode(IDictionaryFilter<TKey, TValue> filter, IDictionary<TKey, TValue> mixableDictionary, IDictionaryFilterNode<TKey, TValue> nextFilter) : this(filter, mixableDictionary) {
+    internal DictionaryFilterLinkNode(IDictionaryFilter<TKey, TValue> filter, IDictionary<TKey, TValue> filteredDictionary, IDictionaryFilterNode<TKey, TValue> nextFilter) : this(filter, filteredDictionary) {
         ArgumentGuard.ThrowIfNull(nextFilter, nameof(nextFilter));
         NextFilter = nextFilter;
     }
@@ -32,7 +32,7 @@ internal sealed class DictionaryFilterLinkNode<TKey, TValue> : VirtualDictionary
         }
     }
 
-    public void SetDictionary(MixableDictionary<TKey, TValue> wrappedDictionary) {
+    public void SetDictionary(FilteredDictionary<TKey, TValue> wrappedDictionary) {
         ThrowIfWrappedDictNull();
         WrappedDictionary = wrappedDictionary;
         NextFilter.SetDictionary(wrappedDictionary);

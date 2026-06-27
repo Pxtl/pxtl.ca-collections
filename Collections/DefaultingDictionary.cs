@@ -5,7 +5,7 @@ namespace PxtlCa.Collections;
 /// <summary>
 /// A dictionary that provides default values for missing keys.
 /// </summary>
-public class DefaultingDictionary<TKey, TValue> : MixableDictionary<TKey, TValue> {
+public class DefaultingDictionary<TKey, TValue> : FilteredDictionary<TKey, TValue> {
     public DefaultingDictionary() : base() {
         Filters = [_delegateDefaultingDictionaryFilter];
     }

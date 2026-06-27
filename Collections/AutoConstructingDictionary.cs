@@ -2,7 +2,7 @@ namespace PxtlCa.Collections;
 
 using PxtlCa.Collections.DictionaryFilters;
 
-public class AutoConstructingDictionary<TKey, TValue> : MixableDictionary<TKey, TValue>
+public class AutoConstructingDictionary<TKey, TValue> : FilteredDictionary<TKey, TValue>
 where TValue : new() {
     public AutoConstructingDictionary() : base() {
         Initialize();

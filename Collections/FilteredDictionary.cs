@@ -6,38 +6,38 @@ namespace PxtlCa.Collections;
 /// <summary>
 /// A dictionary allowing filter extensions for custom behavior.
 /// </summary>
-public class MixableDictionary<TKey, TValue> : VirtualDictionary<TKey, TValue> {
+public class FilteredDictionary<TKey, TValue> : VirtualDictionary<TKey, TValue> {
     #region Constructors
-    public MixableDictionary() : base() {
+    public FilteredDictionary() : base() {
         _filterListHead = new DictionaryFilterTerminalNode<TKey, TValue>(WrappedDictionary);
     }
 
-    public MixableDictionary(IEqualityComparer<TKey> comparer)
+    public FilteredDictionary(IEqualityComparer<TKey> comparer)
         : base(comparer) {
         _filterListHead = new DictionaryFilterTerminalNode<TKey, TValue>(WrappedDictionary);
     }
 
-    public MixableDictionary(int capacity)
+    public FilteredDictionary(int capacity)
         : base(capacity) {
         _filterListHead = new DictionaryFilterTerminalNode<TKey, TValue>(WrappedDictionary);
     }
 
-    public MixableDictionary(int capacity, IEqualityComparer<TKey> comparer)
+    public FilteredDictionary(int capacity, IEqualityComparer<TKey> comparer)
         : base(capacity, comparer) {
         _filterListHead = new DictionaryFilterTerminalNode<TKey, TValue>(WrappedDictionary);
     }
 
-    public MixableDictionary(IDictionary<TKey, TValue> originalDictionary)
+    public FilteredDictionary(IDictionary<TKey, TValue> originalDictionary)
         : base(originalDictionary) {
         _filterListHead = new DictionaryFilterTerminalNode<TKey, TValue>(WrappedDictionary);
     }
 
-    public MixableDictionary(IDictionary<TKey, TValue> originalDictionary, bool wrap)
+    public FilteredDictionary(IDictionary<TKey, TValue> originalDictionary, bool wrap)
         : base(originalDictionary, wrap) {
         _filterListHead = new DictionaryFilterTerminalNode<TKey, TValue>(WrappedDictionary);
     }
 
-    public MixableDictionary(IDictionary<TKey, TValue> originalDictionary, IEqualityComparer<TKey> comparer)
+    public FilteredDictionary(IDictionary<TKey, TValue> originalDictionary, IEqualityComparer<TKey> comparer)
         : base(originalDictionary, comparer) {
         _filterListHead = new DictionaryFilterTerminalNode<TKey, TValue>(WrappedDictionary);
     }
@@ -146,7 +146,7 @@ public class MixableDictionary<TKey, TValue> : VirtualDictionary<TKey, TValue> {
 
 }
 
-public static class MixableDictFactory {
-    public static MixableDictionary<TKey, TValue> Wrap<TKey, TValue>(IDictionary<TKey, TValue> dictionaryToWrap) => new MixableDictionary<TKey, TValue>(dictionaryToWrap, wrap: true);
-    public static MixableDictionary<TKey, TValue> WrapInMixableDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionaryToWrap) => Wrap(dictionaryToWrap);
+public static class FilteredDictionaryFactory {
+    public static FilteredDictionary<TKey, TValue> Wrap<TKey, TValue>(IDictionary<TKey, TValue> dictionaryToWrap)
+    => new FilteredDictionary<TKey, TValue>(dictionaryToWrap, wrap: true);
 }

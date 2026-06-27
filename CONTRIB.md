@@ -36,8 +36,8 @@ This document captures the coding style patterns used in this project.
 - For property accessors / initializers:
 
     ```csharp
-    public SomeType Prop {get;set;} = defaultValue;
-    public SomeType Prop2 {get;init;}
+    public SomeType Prop { get; set; } = defaultValue;
+    public SomeType Prop2 { get; init; }
     public int SingleValueProp => expression;
     ```
 
@@ -130,7 +130,7 @@ This document captures the coding style patterns used in this project.
   naming conventions allow:
 
   ```csharp
-  public bool IsSynchronousMode {get; init;} = false;
+  public bool IsSynchronousMode { get; init; } = false;
   public bool IsResignedPlayer(char player) => ...
   public bool IsGameOver => ...;
   ```
@@ -140,7 +140,7 @@ This document captures the coding style patterns used in this project.
 - Use property initializers when possible:
 
   ```csharp
-  public IReadOnlyList<char> Players {get;init;} = new List<char>();
+  public IReadOnlyList<char> Players { get; init; } = new List<char>();
   public int CurrentTurnPlayerIndex {
       get { return _currentTurnPlayerIndex; }
       set {
@@ -161,7 +161,7 @@ This document captures the coding style patterns used in this project.
 
   ```csharp
   public int BoardSize
-    => Boards.Count();
+  => Boards.Count();
 
   public IEnumerable<int> ActiveBoardIndices { get {
       for(int i = 0; i < Boards.Count; i+=1) {
@@ -194,8 +194,7 @@ This document captures the coding style patterns used in this project.
     public static TItem? MaxByStrict<TItem, TProperty>(
         this IEnumerable<TItem> items, 
         Func<TItem, TProperty> getter) 
-        where TItem : struct 
-    {
+    where TItem : struct {
         ...
     }
     ```
@@ -208,8 +207,8 @@ This document captures the coding style patterns used in this project.
     public static class ExtensionMethods {
         public static TItem? MaxByStrict<TItem, TProperty>(
             this IEnumerable<TItem> items, 
-            Func<TItem, TProperty> getter) where TItem : struct 
-        {
+            Func<TItem, TProperty> getter) 
+        where TItem : struct {
             ...
         }
     }
@@ -269,13 +268,6 @@ This document captures the coding style patterns used in this project.
     public char? Winner { ... }
     ```
 
-## Attributes
-
-- Place attributes above the declaration.
-- Use `[JsonIgnore]` from Newtonsoft.Json to exclude properties from
-  serialization.
-- Use `<summary></summary>` or similar to mark XML documentation tags.
-
 ## Miscellaneous Patterns
 
 - Use string-interpolation for building strings:
@@ -293,17 +285,12 @@ This document captures the coding style patterns used in this project.
     using var fileStream = new FileStream(...);
     ```
 
-- Use `Thread.Sleep` with `using` or careful disposal when needed for timing.
-
-
 ## Files
 
 - One type per file, avoid nested types.  
 - Simple one-line types can be defined in another type's file IFF the type is a
   simple one-line declaration.
 - Namespaces match directory path.
-- Use `internal static` for private API classes.
-- Use `public static` for public static classes.
 
 ## Docs
 

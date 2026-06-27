@@ -3,7 +3,7 @@ using System.Collections;
 namespace PxtlCa.Collections.FilterInternals;
 
 /// <summary>
-/// The terminal node of the linked-list of a <see cref="MixableDictionary{TKey,
+/// The terminal node of the linked-list of a <see cref="FilteredDictionary{TKey,
 /// TValue}"/>.  This node implements its own filter that directly goes straight to
 /// the underlying wrapped dictionary.
 /// </summary>
@@ -11,7 +11,7 @@ internal sealed class DictionaryFilterTerminalNode<TKey, TValue>
 : VirtualDictionary<TKey, TValue>, IDictionaryFilterNode<TKey, TValue> {
     #region IDictionaryFilterHolder Members
 
-    public void SetDictionary(MixableDictionary<TKey, TValue> baseDictionary) {
+    public void SetDictionary(FilteredDictionary<TKey, TValue> baseDictionary) {
         WrappedDictionary = baseDictionary;
     }
     #endregion
