@@ -1,4 +1,7 @@
 using System.Collections;
+using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using PxtlCa.Collections.Extensions;
 
 namespace PxtlCa.Collections;
 
@@ -11,28 +14,36 @@ namespace PxtlCa.Collections;
 /// <typeparam name="T">The type of the items in the list.</typeparam>
 public struct StructList<T> : IReadOnlyList<T> {
     #region Constructors
-    public StructList(IEnumerable<T> enumerable) {
-        _array = enumerable.ToArray();
+    public StructList(IEnumerable<T> values) {
+        _array = values.ToImmutableArray();
     }
+
+    public StructList(ImmutableArray<T> values) {
+        _array = values;
+    }
+
+    public StructList(StructList<T> values) {
+        _array = values._array;
+    }
+
     #endregion
-    private T[] _array;
+    private ImmutableArray<T> _array;
     public static StructList<T> Empty { get; }
 
-    /// <summary>Gets the number of items contained in this collection.</summary>
-    public int Count => Value.Length;
-
-    // /// <summary>Gets a value indicating whether access is read-only for IList&lt;T&gt;.</summary>
-    // public bool IsReadOnly => true;
-
-    private T[] Value {
+    private ImmutableArray<T> Value {
         get {
-            _array ??= [];
+            if (_array.IsDefault) {
+                _array = ImmutableArray<T>.Empty;
+            }
             return _array;
         }
     }
 
+    /// <summary>Gets the number of items contained in this collection.</summary>
+    public int Count => Value.Length;
+
     /// <summary>Gets the index of an item in the wrapped collection.</summary>
-    public int IndexOf(T item) => Array.IndexOf(Value, item);
+    public int IndexOf(T item) => Value.IndexOf(item);
 
     /// <summary>Determines whether the collection contains a specific item of type T.</summary>
     /// <param name="item">The item whose presence is checked.</param>
@@ -46,20 +57,20 @@ public struct StructList<T> : IReadOnlyList<T> {
         get {
             return Value[index];
         }
-        set {
-            Value[index] = value!;
-        }
     }
     #region IEnumerable<T> Members
 
-    public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)Value).GetEnumerator();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<T> GetEnumerator()
+    => ((IEnumerable<T>)Value).GetEnumerator();
 
     #endregion IEnumerable<T> Members
 
     #region IEnumerable Members
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     IEnumerator IEnumerable.GetEnumerator()
-    => Value.GetEnumerator();
+    => ((IEnumerable)Value).GetEnumerator();
     #endregion IEnumerable Members
 
     #region operators
@@ -84,12 +95,23 @@ public struct StructList<T> : IReadOnlyList<T> {
     public override string ToString()
     => $"[{string.Join(", ", _array)}]";
     public static bool operator ==(StructList<T> a, IEnumerable<T> b)
-    => a.SequenceEqual(b);
+    => a.Value.SequenceEqual(b);
     public static bool operator !=(StructList<T> a, IEnumerable<T> b)
-    => !a.SequenceEqual(b);
+    => !a.Value.SequenceEqual(b);
     public static StructList<T> operator +(StructList<T> a, IEnumerable<T> b)
-    => new StructList<T>(a.Concat(b));
-    public static StructList<T> operator +(IEnumerable<T> a, StructList<T> b)
-    => new StructList<T>(a.Concat(b));
+    => new StructList<T>(a.Value.AddRange(b));
+    public static StructList<T> operator +(StructList<T> a, StructList<T> b)
+    => new StructList<T>(a.Value.AddRange(b.Value));
     #endregion
+}
+
+public static class StructList {
+    public static StructList<T> Create<T>(IEnumerable<T> values)
+    => new StructList<T>(values);
+
+    public static StructList<T> Create<T>(ImmutableArray<T> values)
+    => new StructList<T>(values);
+
+    public static StructList<T> Create<T>(StructList<T> values)
+    => new StructList<T>(values);
 }
