@@ -1,15 +1,15 @@
-namespace PxtlCa.ObjectProxies;
+namespace PxtlCa.Collections.Proxies;
 
 public class TreePathMemberProxy<TDictionary, TKey> : MemberProxy<TDictionary, TDictionary>
 where TDictionary : IDictionary<TKey, TDictionary> {
-    public readonly IList<TKey> KeyPath;
+    public readonly IReadOnlyList<TKey> KeyPath;
 
-    public TreePathMemberProxy(IList<TKey> keyPath) {
+    public TreePathMemberProxy(IReadOnlyList<TKey> keyPath) {
         KeyPath = keyPath;
     }
 
     public TreePathMemberProxy(TreePathMemberProxy<TDictionary, TKey> toClone) {
-        KeyPath = new List<TKey>(toClone.KeyPath);
+        KeyPath = toClone.KeyPath.ToList()!;
     }
 
     public TreePathMemberProxy<TDictionary, TKey> Clone() {
@@ -30,15 +30,15 @@ where TDictionary : IDictionary<TKey, TDictionary> {
 
     public override void Set(IObjectProxy<TDictionary> parent, TDictionary memberValue) {
         if (KeyPath == null) {
-            parent.Val = memberValue;
+            parent.Value = memberValue;
             return;
         }
 
         IObjectProxy<TDictionary> curNode = parent;
         foreach (TKey name in KeyPath) {
-            curNode = new DictionaryProxy<TKey, TDictionary>(curNode.Val, name);
+            curNode = new DictionaryProxy<TKey, TDictionary>(curNode.Value, name);
         }
-        curNode.Val = memberValue;
+        curNode.Value = memberValue;
     }
 
     public override ICollection<string> AsPathStrings {
@@ -50,4 +50,9 @@ where TDictionary : IDictionary<TKey, TDictionary> {
             return result;
         }
     }
+
+    public static TreePathMemberProxy<TDictionary, TKey> operator +(
+        TreePathMemberProxy<TDictionary, TKey> first,
+        TreePathMemberProxy<TDictionary, TKey> second
+    ) => new TreePathMemberProxy<TDictionary, TKey>(first.KeyPath.Concat(second.KeyPath).ToList());
 }

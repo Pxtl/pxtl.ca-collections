@@ -1,4 +1,4 @@
-namespace PxtlCa.ObjectProxies;
+namespace PxtlCa.Collections.Proxies;
 
 public class ConcatenatedMemberProxy<TRoot, TJoin, TMember> : MemberProxy<TRoot, TMember> {
     public readonly IMemberProxy<TRoot, TJoin> First;

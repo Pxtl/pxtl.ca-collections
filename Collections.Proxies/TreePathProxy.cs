@@ -1,9 +1,10 @@
-namespace PxtlCa.ObjectProxies;
+namespace PxtlCa.Collections.Proxies;
 
-public class TreePathProxy<TDictionary, TKey> : ObjectMemberProxy<TDictionary, TDictionary> where TDictionary : IDictionary<TKey, TDictionary> {
-    public TreePathProxy(IObjectProxy<TDictionary> nodeProxy, IList<TKey> keyPath) : base(new TreePathMemberProxy<TDictionary, TKey>(keyPath), nodeProxy) { }
+public class TreePathProxy<TDictionary, TKey> : ObjectMemberProxy<TDictionary, TDictionary>
+where TDictionary : IDictionary<TKey, TDictionary> {
+    public TreePathProxy(IObjectProxy<TDictionary> nodeProxy, IReadOnlyList<TKey> keyPath)
+    : base(new TreePathMemberProxy<TDictionary, TKey>(keyPath), nodeProxy) { }
 }
-
 //public class TreePathProxy<TDictionary, TKey> : ObjectProxy<TDictionary> where TDictionary : IDictionary<TKey, TDictionary>
 //{
 //    public IObjectProxy<TDictionary> dict;

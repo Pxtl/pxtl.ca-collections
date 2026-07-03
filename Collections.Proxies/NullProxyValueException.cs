@@ -1,4 +1,4 @@
-namespace PxtlCa.ObjectProxies;
+namespace PxtlCa.Collections.Proxies;
 
 public class NullProxyValueException : Exception {
     public NullProxyValueException() { }

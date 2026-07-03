@@ -1,5 +1,4 @@
 using System.Collections;
-using PxtlCa.Collections.Polyfills;
 
 namespace PxtlCa.Collections.FilterInternals;
 
@@ -10,13 +9,13 @@ namespace PxtlCa.Collections.FilterInternals;
 internal sealed class DictionaryFilterLinkNode<TKey, TValue> : VirtualDictionary<TKey, TValue>, IDictionaryFilterNode<TKey, TValue> {
     #region Constructors
     internal DictionaryFilterLinkNode(IDictionaryFilter<TKey, TValue> filter, IDictionary<TKey, TValue> filteredDictionary) : base(filteredDictionary, wrap: true) {
-        ArgumentGuard.ThrowIfNull(filter, nameof(filter));
+        Ensure.NotNull(filter, nameof(filter));
         NextFilter = new DictionaryFilterTerminalNode<TKey, TValue>(filteredDictionary);
         Filter = filter!;
     }
 
     internal DictionaryFilterLinkNode(IDictionaryFilter<TKey, TValue> filter, IDictionary<TKey, TValue> filteredDictionary, IDictionaryFilterNode<TKey, TValue> nextFilter) : this(filter, filteredDictionary) {
-        ArgumentGuard.ThrowIfNull(nextFilter, nameof(nextFilter));
+        Ensure.NotNull(nextFilter, nameof(nextFilter));
         NextFilter = nextFilter;
     }
     #endregion

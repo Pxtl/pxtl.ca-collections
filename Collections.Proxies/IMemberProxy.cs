@@ -1,4 +1,4 @@
-namespace PxtlCa.ObjectProxies;
+namespace PxtlCa.Collections.Proxies;
 
 /// <summary>
 /// This interface is intended to wrap an object member in a way that accessing

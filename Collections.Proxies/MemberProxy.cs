@@ -1,4 +1,4 @@
-namespace PxtlCa.ObjectProxies;
+namespace PxtlCa.Collections.Proxies;
 
 public abstract class MemberProxy<TParent, TMember> : IMemberProxy<TParent, TMember> {
     public abstract TMember Get(TParent parent);

@@ -1,4 +1,4 @@
-namespace PxtlCa.ObjectProxies;
+namespace PxtlCa.Collections.Proxies;
 
 public class DelegatingProxy<T> : ObjectProxy<T> {
     public delegate T Getter();
@@ -11,7 +11,7 @@ public class DelegatingProxy<T> : ObjectProxy<T> {
         this.SetHandler = setHandler;
     }
 
-    public override T Val {
+    public override T Value {
         get { return GetHandler(); }
         set { SetHandler(value); }
     }

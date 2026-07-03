@@ -1,5 +1,4 @@
 using System.Collections;
-using PxtlCa.Collections.Polyfills;
 
 namespace PxtlCa.Collections;
 
@@ -28,7 +27,7 @@ public class VirtualDictionary<TKey, TValue> : VirtualWrappedDictionary<IDiction
 }
 
 public class VirtualWrappedDictionary<TDictionary, TKey, TValue> : IDictionary<TKey, TValue>
-where TDictionary : IDictionary<TKey, TValue> {
+where TDictionary : class, IDictionary<TKey, TValue> {
     /// <summary>
     /// Provides the underlying collection for this wrapper.
     /// </summary>
@@ -38,7 +37,7 @@ where TDictionary : IDictionary<TKey, TValue> {
 
     #region Wrapping Constructors
     public VirtualWrappedDictionary(TDictionary originalDictionary) {
-        ArgumentGuard.ThrowIfNull(originalDictionary, nameof(originalDictionary));
+        Ensure.NotNull(originalDictionary, nameof(originalDictionary));
         WrappedDictionary = originalDictionary;
     }
     #endregion

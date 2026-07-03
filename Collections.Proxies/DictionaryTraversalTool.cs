@@ -1,4 +1,4 @@
-namespace PxtlCa.ObjectProxies;
+namespace PxtlCa.Collections.Proxies;
 
 public static class DictionaryTraversalTool {
     public delegate void NodeSynchronizeHandler<TValue>(TValue source, IObjectProxy<TValue> target);

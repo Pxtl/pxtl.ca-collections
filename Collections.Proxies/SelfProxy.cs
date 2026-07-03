@@ -1,6 +1,4 @@
-using PxtlCa.Collections.Polyfills;
-
-namespace PxtlCa.ObjectProxies;
+namespace PxtlCa.Collections.Proxies;
 
 public class SelfProxy<T> : MemberProxy<T, T> {
     public static readonly SelfProxy<T> Instance = new SelfProxy<T>();
@@ -10,7 +8,7 @@ public class SelfProxy<T> : MemberProxy<T, T> {
     }
 
     public override void Set(IObjectProxy<T> parent, T memberValue) {
-        parent.Val = memberValue;
+        parent.Value = memberValue;
     }
 
     public override ICollection<string> AsPathStrings {
