@@ -74,7 +74,7 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// </summary>
     /// <param name="array">The array to copy the elements into.</param>
     /// <param name="arrayIndex">The zero-based index at which the copy begins.</param>
-    void ICollection<T>.CopyTo(T[] array, int arrayIndex) {
+    public void CopyTo(T[] array, int arrayIndex) {
         if (array == null) { throw new ArgumentNullException(nameof(array)); }
         var index = arrayIndex;
         foreach (T element in _dictionary.Keys) {
@@ -85,7 +85,7 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// <summary>
     /// Gets whether the set is read-only (it is not).
     /// </summary>
-    bool ICollection<T>.IsReadOnly => false;
+    public bool IsReadOnly => false;
     #endregion
 
     #region ISet<T>
@@ -93,7 +93,7 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// Modifies the set to contain the union of its current elements and the specified collection.
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    void ISet<T>.UnionWith(IEnumerable<T> other) {
+    public void UnionWith(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
         foreach (T element in other) {
             _dictionary.TryAdd(element, (byte)0);
@@ -104,7 +104,7 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// Modifies the set to remove any element that also appears in the specified collection.
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    void ISet<T>.ExceptWith(IEnumerable<T> other) {
+    public void ExceptWith(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
         foreach (T element in other) {
             _dictionary.TryRemove(element, out _);
@@ -115,7 +115,7 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// Modifies the set to contain only the elements that also appear in the specified collection.
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    void ISet<T>.IntersectWith(IEnumerable<T> other) {
+    public void IntersectWith(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
         var otherSet = new HashSet<T>(other, _comparer);
         foreach (T element in _dictionary.Keys) {
@@ -130,7 +130,7 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// collection, but not both (the symmetric difference).
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    void ISet<T>.SymmetricExceptWith(IEnumerable<T> other) {
+    public void SymmetricExceptWith(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
         foreach (T element in other) {
             if (!_dictionary.TryAdd(element, (byte)0)) {
@@ -143,7 +143,7 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// Determines whether the set and the specified collection share at least one element.
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    bool ISet<T>.Overlaps(IEnumerable<T> other) {
+    public bool Overlaps(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
         foreach (T element in other) {
             if (_dictionary.ContainsKey(element)) {
@@ -157,9 +157,14 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// Determines whether the set contains all the elements of the specified collection.
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    bool ISet<T>.IsSupersetOf(IEnumerable<T> other) {
+    public bool IsSupersetOf(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
-        foreach (T element in other) {
+        var otherSet = new HashSet<T>(other, _comparer);
+        return IsSupersetOf(otherSet);
+    }
+
+    private bool IsSupersetOf(HashSet<T> otherSet) {
+        foreach (T element in otherSet) {
             if (!_dictionary.ContainsKey(element)) {
                 return false;
             }
@@ -172,34 +177,26 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// (it contains all of its elements and at least one more).
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    bool ISet<T>.IsProperSupersetOf(IEnumerable<T> other) {
+    public bool IsProperSupersetOf(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
         var otherSet = new HashSet<T>(other, _comparer);
-        var hasExtraElement = false;
-        foreach (T element in _dictionary.Keys) {
-            if (!otherSet.Contains(element)) {
-                hasExtraElement = true;
-                break;
-            }
-        }
-        if (!hasExtraElement) {
+        if (_dictionary.Count <= otherSet.Count) {
             return false;
         }
-        foreach (T element in other) {
-            if (!_dictionary.ContainsKey(element)) {
-                return false;
-            }
-        }
-        return true;
+        return IsSupersetOf(otherSet);
     }
 
     /// <summary>
     /// Determines whether the set contains no element that is not in the specified collection.
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    bool ISet<T>.IsSubsetOf(IEnumerable<T> other) {
+    public bool IsSubsetOf(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
         var otherSet = new HashSet<T>(other, _comparer);
+        return IsSubsetOf(otherSet);
+    }
+
+    private bool IsSubsetOf(HashSet<T> otherSet) {
         foreach (T element in _dictionary.Keys) {
             if (!otherSet.Contains(element)) {
                 return false;
@@ -213,38 +210,28 @@ public class ConcurrentHashSet<T> : IEnumerable<T>, ISet<T> {
     /// (all of its elements are in the collection, and the collection has at least one more).
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    bool ISet<T>.IsProperSubsetOf(IEnumerable<T> other) {
+    public bool IsProperSubsetOf(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
         var otherSet = new HashSet<T>(other, _comparer);
-        foreach (T element in _dictionary.Keys) {
-            if (!otherSet.Contains(element)) {
-                return false;
-            }
+        if (_dictionary.Count >= otherSet.Count) {
+            return false;
         }
-        foreach (T element in other) {
-            if (!_dictionary.ContainsKey(element)) {
-                return true;
-            }
-        }
-        return false;
+        return IsSubsetOf(otherSet);
     }
 
     /// <summary>
     /// Determines whether the set and the specified collection contain the same elements.
     /// </summary>
     /// <param name="other">The collection of elements.</param>
-    bool ISet<T>.SetEquals(IEnumerable<T> other) {
+    public bool SetEquals(IEnumerable<T> other) {
         if (other == null) { throw new ArgumentNullException(nameof(other)); }
         var otherSet = new HashSet<T>(other, _comparer);
         if (otherSet.Count != _dictionary.Count) {
             return false;
         }
-        foreach (T element in _dictionary.Keys) {
-            if (!otherSet.Contains(element)) {
-                return false;
-            }
-        }
-        return true;
+        // if the sets have the same number of elements (checked above) then
+        // subset means they are equal.
+        return IsSubsetOf(otherSet);
     }
     #endregion
 
