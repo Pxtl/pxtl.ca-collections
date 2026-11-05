@@ -23,6 +23,11 @@ FilteredDictionaries exist in the form of `AutoConstructingDictionary`,
 `DefaultingDictionary`, and `ChangeNotingDictionary`, which each of which are a
 subclass of FilteredDictionary with a Filter baked-in.
 
+# ConcurrentHashSet
+
+The obvious thing - an implementation of `ISet<T>` using
+ConcurrentDictionary.
+
 # PxtlCa.Collections.Proxies
 
 A second project `PxtlCa.Collections.Proxies`.  It is a set of pseudo-pointer
