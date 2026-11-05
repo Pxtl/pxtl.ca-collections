@@ -85,4 +85,170 @@ public class ConcurrentHashSetTests {
         await Task.WhenAll(tasks);
         set.Count.Should().Be(50);
     }
+
+    [Fact]
+    public void ISet_UnionWith_AddsOnlyMissing() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).UnionWith(new[] { "b", "c", "d" });
+        set.Should().BeEquivalentTo("a", "b", "c", "d");
+    }
+
+    [Fact]
+    public void ISet_ExceptWith_RemovesShared() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        set.Add("c");
+        ((ISet<string>)set).ExceptWith(new[] { "b", "z" });
+        set.Should().BeEquivalentTo("a", "c");
+    }
+
+    [Fact]
+    public void ISet_IntersectWith_KeepsOnlyShared() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        set.Add("c");
+        ((ISet<string>)set).IntersectWith(new[] { "b", "d" });
+        set.Should().BeEquivalentTo("b");
+    }
+
+    [Fact]
+    public void ISet_SymmetricExceptWith_TogglesMembership() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        set.Add("c");
+        ((ISet<string>)set).SymmetricExceptWith(new[] { "b", "d" });
+        set.Should().BeEquivalentTo("a", "c", "d");
+    }
+
+    [Fact]
+    public void ISet_IsProperSubsetOf_TrueWhenStrictlySmaller() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).IsProperSubsetOf(new[] { "a", "b", "c" }).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ISet_IsProperSubsetOf_FalseWhenEqual() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).IsProperSubsetOf(new[] { "a", "b" }).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ISet_IsProperSubsetOf_FalseWhenNotSubset() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).IsProperSubsetOf(new[] { "b", "c" }).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ISet_SetEquals_TrueWhenSameElements() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).SetEquals(new[] { "b", "a" }).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ISet_SetEquals_FalseWhenDifferent() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).SetEquals(new[] { "a", "c" }).Should().BeFalse();
+        ((ISet<string>)set).SetEquals(new[] { "a" }).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ICollection_CopyTo_CopiesAllElements() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        var array = new string[2];
+        ((ICollection<string>)set).CopyTo(array, 0);
+        array.Should().BeEquivalentTo("a", "b");
+    }
+
+    [Fact]
+    public void ICollection_IsReadOnly_IsFalse() {
+        var set = new ConcurrentHashSet<string>();
+        ((ICollection<string>)set).IsReadOnly.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ISet_Overlaps_TrueWhenShared() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        ((ISet<string>)set).Overlaps(new[] { "x", "a" }).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ISet_Overlaps_FalseWhenDisjoint() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        ((ISet<string>)set).Overlaps(new[] { "x", "y" }).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ISet_IsSupersetOf_TrueWhenContainsAll() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).IsSupersetOf(new[] { "a", "b" }).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ISet_IsSupersetOf_FalseWhenMissingElement() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        ((ISet<string>)set).IsSupersetOf(new[] { "a", "b" }).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ISet_IsProperSupersetOf_TrueWhenStrictlyLarger() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        set.Add("c");
+        ((ISet<string>)set).IsProperSupersetOf(new[] { "a", "b" }).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ISet_IsProperSupersetOf_FalseWhenEqual() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).IsProperSupersetOf(new[] { "a", "b" }).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ISet_IsProperSupersetOf_FalseWhenNotSuperset() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).IsProperSupersetOf(new[] { "b", "c" }).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ISet_IsSubsetOf_TrueWhenContained() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).IsSubsetOf(new[] { "a", "b", "c" }).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ISet_IsSubsetOf_FalseWhenNotContained() {
+        var set = new ConcurrentHashSet<string>();
+        set.Add("a");
+        set.Add("b");
+        ((ISet<string>)set).IsSubsetOf(new[] { "a", "c" }).Should().BeFalse();
+    }
 }
